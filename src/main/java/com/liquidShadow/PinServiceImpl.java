@@ -21,8 +21,6 @@ public class PinServiceImpl implements PinService {
 		log.info("Reading Pin {}", pin);
 		int pinValue =0;
 				
-		/*Gpio.wiringPiSetup();
-		pinValue = SoftPwm.softPwmCreate(pin, 0, 100);*/
 		GpioController gpio = GpioFactory.getInstance();
 		GpioPinDigitalInput pinIn = gpio.provisionDigitalInputPin(RaspiPin.getPinByAddress(pin), "Reader");
 		log.info("pin {} {} ", pin, pinIn.toString());
