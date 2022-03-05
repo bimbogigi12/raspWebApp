@@ -41,6 +41,11 @@
 			<optional>true</optional>
 			<version>1.18.22</version>
 		</dependency>
+		<dependency>
+			<groupId>com.pi4j</groupId>
+			<artifactId>pi4j-core</artifactId>
+			<version>1.2</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>raspWebApp</finalName>
