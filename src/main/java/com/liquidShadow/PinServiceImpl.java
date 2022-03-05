@@ -22,9 +22,14 @@ public class PinServiceImpl implements PinService {
 		int pinValue =0;
 				
 		GpioController gpio = GpioFactory.getInstance();
-		GpioPinDigitalInput pinIn = gpio.provisionDigitalInputPin(RaspiPin.getPinByAddress(pin), "Reader");
+		GpioPinDigitalInput pinIn = (GpioPinDigitalInput)gpio.getProvisionedPin(RaspiPin.getPinByAddress(pin));
+		if (pinIn == null) {
+			pinIn = gpio.provisionDigitalInputPin(RaspiPin.getPinByAddress(pin), "Reader");
+		}
+		
 		log.info("pin {} {} ", pin, pinIn.toString());
 		pinValue =pinIn.getState() == PinState.HIGH ? 100:0;
+		
 		log.info("Read value {} pin {}", pinValue, pin);
 		return pinValue;
 	}
