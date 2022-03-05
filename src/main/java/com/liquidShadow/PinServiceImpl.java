@@ -2,10 +2,8 @@ package com.liquidShadow;
 
 import org.springframework.stereotype.Service;
 
-import com.pi4j.io.gpio.GpioController;
-import com.pi4j.io.gpio.GpioFactory;
-import com.pi4j.io.gpio.GpioPinPwmOutput;
-import com.pi4j.io.gpio.RaspiPin;
+import com.pi4j.wiringpi.Gpio;
+import com.pi4j.wiringpi.SoftPwm;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,9 +15,12 @@ public class PinServiceImpl implements PinService {
 	public int readPinValue(int pin) {
 		log.info("Reading Pin {}", pin);
 		int pinValue =0;
-		GpioController gpio = GpioFactory.getInstance();
-		GpioPinPwmOutput pinIn = gpio.provisionSoftPwmOutputPin(RaspiPin.getPinByAddress(pin), "Reader");
-		pinValue =pinIn.getPwm();
+				
+		Gpio.wiringPiSetup();
+		pinValue = SoftPwm.softPwmCreate(pin, 0, 100);
+		/*GpioController gpio = GpioFactory.getInstance();
+		GpioPinDigitalInput pinIn = gpio.provisionDigitalInputPin(RaspiPin.getPinByAddress(pin), "Reader");
+		pinValue =pinIn.getState() == PinState.HIGH ? 100:0;*/
 		log.info("Read value {} pin {}", pinValue, pin);
 		return pinValue;
 	}
@@ -27,9 +28,9 @@ public class PinServiceImpl implements PinService {
 	@Override
 	public void setPinValue(int pin, int value) {
 		log.info("setting value {} for pin {}", value, pin);
-		GpioController gpio = GpioFactory.getInstance();
-		GpioPinPwmOutput pinOut = gpio.provisionSoftPwmOutputPin(RaspiPin.getPinByAddress(pin), "Reader");
-		pinOut.setPwm(value);
+		Gpio.wiringPiSetup();
+		SoftPwm.softPwmCreate(pin, 0, 100);
+		SoftPwm.softPwmWrite(pin, value);
 	}
 
 }
