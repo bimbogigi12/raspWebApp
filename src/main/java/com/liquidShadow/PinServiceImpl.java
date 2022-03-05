@@ -2,6 +2,11 @@ package com.liquidShadow;
 
 import org.springframework.stereotype.Service;
 
+import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioFactory;
+import com.pi4j.io.gpio.GpioPinDigitalInput;
+import com.pi4j.io.gpio.PinState;
+import com.pi4j.io.gpio.RaspiPin;
 import com.pi4j.wiringpi.Gpio;
 import com.pi4j.wiringpi.SoftPwm;
 
@@ -16,11 +21,12 @@ public class PinServiceImpl implements PinService {
 		log.info("Reading Pin {}", pin);
 		int pinValue =0;
 				
-		Gpio.wiringPiSetup();
-		pinValue = SoftPwm.softPwmCreate(pin, 0, 100);
-		/*GpioController gpio = GpioFactory.getInstance();
+		/*Gpio.wiringPiSetup();
+		pinValue = SoftPwm.softPwmCreate(pin, 0, 100);*/
+		GpioController gpio = GpioFactory.getInstance();
 		GpioPinDigitalInput pinIn = gpio.provisionDigitalInputPin(RaspiPin.getPinByAddress(pin), "Reader");
-		pinValue =pinIn.getState() == PinState.HIGH ? 100:0;*/
+		log.info("pin {} {} ", pin, pinIn.toString());
+		pinValue =pinIn.getState() == PinState.HIGH ? 100:0;
 		log.info("Read value {} pin {}", pinValue, pin);
 		return pinValue;
 	}
